@@ -4,6 +4,23 @@
 // };
 
 // But instead we're going to implement it from scratch:
+//input - string
+//output - array
+
+// You should use document.body, element.childNodes, and element.classList
+
 var getElementsByClassName = function(className) {
-	return true;
+  const result = []
+  
+  function parse(node) {
+    if (node.classList && node.classList.value.indexOf(className) > -1) {
+      result.push(node)
+    }
+    node.childNodes.forEach((child) => 
+      parse(child)
+    )
+  }
+  parse(document.body)
+  
+  return result
 };

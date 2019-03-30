@@ -1,5 +1,6 @@
 var htmlStrings = [
-  '<div class="targetClassName"></div>',
+  '<div class="targetClassName"></div>', 
+  
   '<div class="otherClassName targetClassName"></div>',
   '<div><div class="targetClassName"></div></div>',
   '<div><div class="targetClassName"><div class="targetClassName"></div></div></div>',
