@@ -5,39 +5,43 @@
 
 // working 
 var stringifyJSON = function(element) {
-  let result = "";
-  // number
+  let result = element;
+
+  // Number
   if(typeof element === 'number'){
-    result += element;
-    return `${result}`;
+    result = element;
   }
-
-  // null
-  if(element === null){
-    return `null`;
-  }
-
-  // boolean
-  if(element === true){
-    return `true`;
-  }
-  if(element === false){
-    return `false`;
-  }
-
+  
   // String
   if(typeof element === 'string'){
-    return `"${element}"`
+    result = `"${element}"`;
   }
 
-  // array
+  // Array
   if(Array.isArray(element) === true){
-    let newArr = element;
-    if(typeof element === 'string'){
-      
+    result = [];
+    // Empty
+    if(element.length === 0){
+      result = `${element}`;
     }
-    return `[${newArr}]`;
+    for(let i = 0; i < element.length; i++){
+      // Number
+      if(typeof element[i] === 'number'){
+        result = `${element}`
+      }
+      // String
+      if(typeof element[i] === 'string'){
+        result = `"${element}"`;
+      }
+      // Array
+      if(Array.isArray(element[i]) === true){
+        stringifyJSON(element[i]);
+      }
+    }
+    return `[${result}]`
   }
+
+  return `${result}`;
 
 };
 
