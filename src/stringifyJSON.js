@@ -4,44 +4,26 @@
 // but you don't so you're going to write it from scratch:
 
 // working 
-var stringifyJSON = function(element) {
-  let result = element;
-
-  // Number
-  if(typeof element === 'number'){
-    result = element;
-  }
-  
-  // String
-  if(typeof element === 'string'){
-    result = `"${element}"`;
-  }
-
-  // Array
-  if(Array.isArray(element) === true){
-    result = [];
-    // Empty
-    if(element.length === 0){
-      result = `${element}`;
+var stringifyJSON = function(obj) {
+  if( Array.isArray(obj) ){
+    var results = [];
+    for( var i = 0; i < obj.length; i++ ){
+      results.push( stringifyJSON(obj[i]) );
     }
-    for(let i = 0; i < element.length; i++){
-      // Number
-      if(typeof element[i] === 'number'){
-        result = `${element}`
-      }
-      // String
-      if(typeof element[i] === 'string'){
-        result = `"${element}"`;
-      }
-      // Array
-      if(Array.isArray(element[i]) === true){
-        stringifyJSON(element[i]);
-      }
-    }
-    return `[${result}]`
+    return '[' + results.join(',') + ']';
   }
-
-  return `${result}`;
-
+  if( obj && typeof obj === 'object' ){
+    var results = [];
+    for( var key in obj ){
+      if( obj[key] === undefined || typeof obj[key] === 'function'){
+        continue;
+      }
+      results.push( stringifyJSON(key) + ':' + stringifyJSON(obj[key]) );
+    }
+    return '{' + results.join(',') + '}';
+  }
+  if( typeof obj === 'string' ){
+    return '"'+obj+'"';
+  }
+  return ''+obj;
 };
-
