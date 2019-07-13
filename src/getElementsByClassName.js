@@ -10,23 +10,24 @@
 //input - string
 //output - array
 const getElementsByClassName = (className, node) => {
-    debugger;
-    var nodes = [];
-    node = node || document.body;
-  
-    // compare the node's classname with className
-    var parts = node.className.split(' ');
-    if( parts.indexOf(className) >= 0 ){
-      // if equal, save it
-      nodes.push(node);
-    }
-  
-    // iterate over all children
-    for( var i = 0; i < node.children.length; i++ ){
-      // for each child, recurse with new node
-      var childResults = getElementsByClassName(className, node.children[i]);
-      nodes = nodes.concat(childResults);
-    }
-  
-    return nodes;
+  let results = [];  
+  let body = document.body;
+
+  let helper = (element) => {
+      // check if element has targetClassName
+      if(element.classList.contains(className)){
+          // if yes, add to results array
+        results.push(element);
+      }
+      // check if child
+      if(element.children.length !== 0){
+        // if yes, call function on child
+        for(let i = 0; i < element.children.length; i++){
+            helper(element.children[i]);
+        }
+      } 
+  }
+
+    helper(body);
+  return results;
 };

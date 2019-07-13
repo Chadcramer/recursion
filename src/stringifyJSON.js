@@ -5,25 +5,32 @@
 
 // working 
 var stringifyJSON = function(obj) {
-  if( Array.isArray(obj) ){
-    var results = [];
-    for( var i = 0; i < obj.length; i++ ){
-      results.push( stringifyJSON(obj[i]) );
+  let results;
+  // if number or null
+  if(typeof obj === 'number' || obj === null || typeof obj === 'boolean'){
+    results = `${obj}`;
+  }
+
+  // String
+  if(typeof obj === 'string'){
+    results = `"${obj}"`
+  }
+
+  // Array
+  if(Array.isArray(obj) === true){
+    let temp = obj.map((val) => {
+      return stringifyJSON(val);
+    })
+    results = `[${temp}]`;
+  }
+
+  // Object
+  if(typeof obj === 'object'){
+    for(let key in obj){
+      return stringifyJSON(obj[key]);
     }
-    return '[' + results.join(',') + ']';
+    results = `{${obj}`;
   }
-  if( obj && typeof obj === 'object' ){
-    var results = [];
-    for( var key in obj ){
-      if( obj[key] === undefined || typeof obj[key] === 'function'){
-        continue;
-      }
-      results.push( stringifyJSON(key) + ':' + stringifyJSON(obj[key]) );
-    }
-    return '{' + results.join(',') + '}';
-  }
-  if( typeof obj === 'string' ){
-    return '"'+obj+'"';
-  }
-  return ''+obj;
+
+  return results;
 };
