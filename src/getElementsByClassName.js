@@ -9,25 +9,25 @@
 
 //input - string
 //output - array
-const getElementsByClassName = (className, node) => {
+const getElementsByClassName = (className) => {
   let results = [];  
   let body = document.body;
 
   let helper = (element) => {
-      // check if element has targetClassName
-      if(element.classList.contains(className)){
-          // if yes, add to results array
-        results.push(element);
+    // check if element has targetClassName
+    if(element.classList.contains(className)){
+      // if yes, add to results array
+      results.push(element);
+    }
+    // check if child
+    if(element.children.length !== 0){
+      // if yes, call function on child
+      for(let i = 0; i < element.children.length; i++){
+        helper(element.children[i]);
       }
-      // check if child
-      if(element.children.length !== 0){
-        // if yes, call function on child
-        for(let i = 0; i < element.children.length; i++){
-            helper(element.children[i]);
-        }
-      } 
+    } 
   }
 
-    helper(body);
+  helper(body);
   return results;
 };

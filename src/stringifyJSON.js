@@ -4,7 +4,7 @@
 // but you don't so you're going to write it from scratch:
 
 // working 
-var stringifyJSON = function(obj) {
+function stringifyJSON (obj) {
   let results;
   // if number or null
   if(typeof obj === 'number' || obj === null || typeof obj === 'boolean'){
@@ -25,11 +25,17 @@ var stringifyJSON = function(obj) {
   }
 
   // Object
-  if(typeof obj === 'object'){
+  if(typeof obj === 'object' && obj !== null && Array.isArray(obj) === false){
+    let newKey = '';
+    let newVal = '';
+    let temp = '';
+
     for(let key in obj){
-      return stringifyJSON(obj[key]);
+      newKey = stringifyJSON(key);
+      newVal = stringifyJSON(obj[key]);
+      temp += newKey + ':' + newVal;
     }
-    results = `{${obj}`;
+    results = '{' + temp + '}';
   }
 
   return results;
