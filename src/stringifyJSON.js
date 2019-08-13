@@ -3,40 +3,26 @@
 
 // but you don't so you're going to write it from scratch:
 
-// working 
-function stringifyJSON (obj) {
-  let results;
-  // if number or null
-  if(typeof obj === 'number' || obj === null || typeof obj === 'boolean'){
-    results = `${obj}`;
-  }
-
-  // String
-  if(typeof obj === 'string'){
-    results = `"${obj}"`
-  }
-
-  // Array
-  if(Array.isArray(obj) === true){
-    let temp = obj.map((val) => {
-      return stringifyJSON(val);
-    })
-    results = `[${temp}]`;
-  }
-
-  // Object
-  if(typeof obj === 'object' && obj !== null && Array.isArray(obj) === false){
-    let newKey = '';
-    let newVal = '';
-    let temp = '';
-
-    for(let key in obj){
-      newKey = stringifyJSON(key);
-      newVal = stringifyJSON(obj[key]);
-      temp += newKey + ':' + newVal;
+var stringifyJSON = function(obj) {
+  if( Array.isArray(obj) ){
+    var results = [];
+    for( var i = 0; i < obj.length; i++ ){
+      results.push( stringifyJSON(obj[i]) );
     }
-    results = '{' + temp + '}';
+    return '[' + results.join(',') + ']';
   }
-
-  return results;
+  if( obj && typeof obj === 'object' ){
+    var results = [];
+    for( var key in obj ){
+      if( obj[key] === undefined || typeof obj[key] === 'function'){
+        continue;
+      }
+      results.push( stringifyJSON(key) + ':' + stringifyJSON(obj[key]) );
+    }
+    return '{' + results.join(',') + '}';
+  }
+  if( typeof obj === 'string' ){
+    return '"'+obj+'"';
+  }
+  return ''+obj;
 };
